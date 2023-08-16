@@ -1,0 +1,57 @@
+keybinds  clear-defaults=true {
+
+  normal {
+    bind "F12" { SwitchToMode "pane"; }
+  }
+
+  pane {
+    bind "Esc" { SwitchToMode "normal"; }
+
+    bind "d" { NewPane "Right"; SwitchToMode "normal"; }
+    bind "v" { NewPane "Down"; SwitchToMode "normal"; }
+    bind "e" { EditScrollback; SwitchToMode "normal";  }
+
+    bind "l" { MoveFocus "Right"; SwitchToMode "normal"; }
+    bind "h" { MoveFocus "Left"; SwitchToMode "normal"; }
+    bind "j" { MoveFocus "Down"; SwitchToMode "normal"; }
+    bind "k" { MoveFocus "Up"; SwitchToMode "normal"; }
+    bind "L" { Resize "Right"; }
+    bind "H" { Resize "Left"; }
+    bind "J" { Resize "Down"; }
+    bind "K" { Resize "Up"; }
+
+    bind "u" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+
+    bind "c" { NewTab; SwitchToMode "normal"; }
+    bind "n" { GoToNextTab; }
+    bind "p" { GoToPreviousTab; }
+    bind "Tab" { ToggleTab; SwitchToMode "normal"; }
+
+    bind "C" { NewPane "Down"; TogglePaneEmbedOrFloating; SwitchToMode "normal"; }
+    bind "w" { ToggleFloatingPanes; SwitchToMode "normal"; }
+    bind "f" { NewPane; SwitchToMode "normal";  }
+    bind "Space" { TogglePaneEmbedOrFloating; }
+  }
+
+}
+
+default_layout "compact"
+pane_frames false
+simplified_ui true
+
+theme "tokyo-night"
+themes {
+    tokyo-night {
+        fg 169 177 214
+        bg 26 27 38
+        black 56 62 90
+        red 249 51 87
+        green 158 206 106
+        yellow 224 175 104
+        blue 122 162 247
+        magenta 187 154 247
+        cyan 42 195 222
+        white 192 202 245
+        orange 255 158 100
+    }
+}

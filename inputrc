@@ -1,0 +1,74 @@
+set bind-tty-special-chars off
+set editing-mode vi
+set keymap vi
+"\C-h": nop
+"\C-a": backward-delete-char
+
+"\C-a\C-xm": set-mark
+"\C-a\C-xh": backward-char
+"\C-a\C-xl": forward-char
+"\C-a\C-xw": vi-forward-word
+"\C-a\C-xW": vi-forward-bigword
+"\C-a\C-xb": vi-backward-word
+"\C-a\C-xB": vi-backward-bigword
+"\C-a\C-xe": vi-end-word
+"\C-a\C-xE": vi-end-bigword
+"\C-a\C-xf": vi-char-search
+"\C-a\C-xt": vi-char-search
+"\C-a\C-xF": vi-char-search
+"\C-a\C-xT": vi-char-search
+"\C-a\C-x0": beginning-of-line
+"\C-a\C-x$": end-of-line
+"\C-a\C-xd": kill-region
+"\C-a\C-xy": copy-region-as-kill
+
+"h": "\C-a\C-xm\C-a\C-xh"
+"H": "\C-a\C-xh"
+"\M-h": "\C-a\C-xm\C-a\C-x0"
+"\M-H": "\C-a\C-x0"
+"gh": "\C-a\C-x0\C-a\C-xm"
+"Gh": "\C-a\C-x0"
+"GH": "\C-a\C-x0"
+"l": "\C-a\C-xm\C-a\C-xl"
+"L": "\C-a\C-xl"
+"gl": "\C-a\C-x$\C-a\C-xm"
+"Gl": "\C-a\C-x$"
+"GL": "\C-a\C-x$"
+"\M-l": "\C-a\C-xm\C-a\C-x$"
+"\M-L": "\C-a\C-x$"
+"w": "\C-a\C-xm\C-a\C-xw"
+"W": "\C-a\C-xw"
+"\M-w": "\C-a\C-xm\C-a\C-xW"
+"\M-W": "\C-a\C-xW"
+"b": "\C-a\C-xm\C-a\C-xb"
+"B": "\C-a\C-xb"
+"\M-b": "\C-a\C-xm\C-a\C-xB"
+"\M-B": "\C-a\C-xB"
+"e": "\C-a\C-xm\C-a\C-xe"
+"E": "\C-a\C-xE"
+"\M-e": "\C-a\C-xm\C-a\C-xE"
+"\M-E": "\C-a\C-xE"
+"f": "\C-a\C-xm\C-a\C-xf"
+"F": "\C-a\C-xf"
+"\M-f": "\C-a\C-xm\C-a\C-xF"
+"\M-F": "\C-a\C-xF"
+"t": "\C-a\C-xm\C-a\C-xt"
+"T": "\C-a\C-xt"
+"\M-t": "\C-a\C-xm\C-a\C-xT"
+"\M-T": "\C-a\C-xT"
+"x": "\C-a\C-x0\C-a\C-xm\C-a\C-x$"
+";": "\C-a\C-xm"
+"\M-;": exchange-point-and-mark
+"d": kill-region
+"gg": beginning-of-history
+"gk": beginning-of-history
+"gj": end-of-history
+"ge": end-of-history
+"c": "\C-a\C-xdi"
+"y": "\C-a\C-xy"
+"P": "\C-a\C-xhp"
+"\C-v": nop
+"\C-a": nop
+
+set bind-tty-special-chars off
+set enable-bracketed-paste on
