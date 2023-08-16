@@ -1,0 +1,5 @@
+bind status C !git commit
+bind status W !git commit -m wip
+bind status P !<git push
+
+bind main <Ctrl-R> !<git rebase -i %(commit)^

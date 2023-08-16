@@ -1,0 +1,246 @@
+#A-<key> Rebinds
+map global goto t a
+#map global goto L l
+#map global goto H h
+#map global goto G g
+#map global goto K k
+#map global goto E e
+#map global goto J j
+map global user a <A-a>
+map global user b <A-b>
+map global user c <A-c>
+#map global user C <A-C>
+map global user B <A-B>
+map global user s <A-s>
+map global user x <A-x>
+map global user b <A-b>
+map global user z <A-z>
+map global user Z <A-Z>
+map global user p <A-p>
+map global user P <A-P>
+map global user e <A-e>
+map global user j <A-j>
+map global user J <A-J>
+map global user l <A-l>
+map global user L <A-L>
+map global user h <A-h>
+map global user a <A-a>
+map global user i <A-i>
+#map global user / <A-/>
+map global user n <A-n>
+map global user k <A-k>
+map global user K <A-K>
+map global user s <A-s>
+map global user ) <A-)>
+map global user ( <A-(>
+
+
+hook global ModuleLoaded fzf-mode %{
+    set-option global fzf_file_command "rg"
+}
+
+hook global ModuleLoaded zellij %{
+    alias global focus zellij-focus
+    alias global terminal zellij-terminal-impl
+}
+
+hook global ModuleLoaded konflict %{
+    declare-user-mode konflict
+    map global user C ': enter-user-mode konflict<ret>' -docstring "Enter git conflict resolution mode"
+    map global konflict s ': konflict-start<ret>' -docstring "Start git conflict resolution"
+    map global konflict j ': konflict-use-mine<ret>' -docstring "Use Mine"
+    map global konflict k ': konflict-use-yours<ret>' -docstring "Use Yours"
+    map global konflict J ': konflict-use-mine-then-yours<ret>' -docstring "Use Mine then Yours"
+    map global konflict K ': konflict-use-yours-then-mine<ret>' -docstring "Use yours then Mine"
+    map global konflict d ': konflict-use-none<ret>' -docstring "Use None"
+}
+
+require-module fzf
+require-module zellij
+require-module konflict
+
+# add-highlighter global/ show-whitespaces -tab '|' -tabpad '-'
+
+declare-option -hidden range-specs alignment_spaces_specs
+define-command -hidden -override update-alignment-spaces %{
+    try %[ eval -draft %{
+        exec <percent> s ^ <space> <ret>
+        exec w s <space> { %opt{indentwidth} } <ret> '<a-;>' ';'
+        set-option window alignment_spaces_specs %val{timestamp}
+        eval -itersel %{
+            set-option -add window alignment_spaces_specs "%val{selection_desc}|│"
+        }
+    }]
+}
+
+define-command window-remove-alignment %{
+    remove-highlighter window/alignment-tabs
+    remove-highlighter window/alignment-spaces
+    remove-highlighter window/alignment-spaces-hl
+    remove-hooks window alignment
+}
+define-command window-enable-alignment-tabs %{
+    add-highlighter window/alignment-tabs ref -passes move alignment-tabs
+}
+define-command window-enable-alignment-spaces %{
+    hook window -group alignment NormalIdle .* update-alignment-spaces
+    hook window -group alignment InsertIdle .* update-alignment-spaces
+    add-highlighter window/alignment-spaces ref -passes move alignment-spaces
+    add-highlighter window/alignment-spaces-hl regex \
+        "( ) {%sh{ let ""x = $kak_opt_indentwidth - 1""; echo $x }}" 1:Whitespace
+}
+
+add-highlighter shared/alignment-tabs show-whitespaces -tab '│' -tabpad ' ' -spc ' ' -lf ' ' -nbsp ' '
+add-highlighter shared/alignment-spaces replace-ranges alignment_spaces_specs
+
+# colorscheme primer
+
+define-command stripw %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
+map global user w ':stripw<ret>'
+
+map global user . <A-.>
+map global user <space> <A-space>
+map global user <semicolon> <A-semicolon>
+
+map global user t '|sort<ret>'
+
+map global object m %{c^[<lt>=]{4\,}[^\n]*\n,^[<gt>=]{4\,}[^\n]*\n<ret>} -docstring 'conflict markers'
+
+map global user m :mark-word<ret>
+map global user M :mark-clear<ret>
+
+wiki-setup %sh{ echo $HOME/notational }
+
+#custom binds
+map global user a '*%s<ret>' -docstring 'select all'
+map global user y '<a-|>xclip -i -selection clipboard<ret>'
+map global user d '<a-|>xclip -i -selection clipboard<ret>d'
+map global user p '!xclip -selection clipboard -o<ret>'
+
+map global normal '#' :comment-line<ret> -docstring 'comment line'
+map global user '#' :comment-block<ret> -docstring 'comment block'
+
+map global user l ':w<ret> $ lint -f $kak_buffile<ret>' -docstring 'lint -f'
+
+alias global x write-quit
+add-highlighter global/ number-lines
+
+set-face global LineNumbers rgb:696969,default
+
+#cosmetic
+set-face global Search +bi
+set-face global search +bi
+set global ui_options ncurses_assistant=none
+face global Information white
+face global Error red
+
+add-highlighter global/ column '80' default,rgb:d1d5da
+
+#Control-P imitation
+def find -params 1 -shell-script-candidates %{ find -type f } %{ edit %arg{1} }
+# map global normal <C-p> ':find '
+map global normal <c-b> ': fzf-mode<ret>b'
+map global normal <c-t> ': fzf-mode<ret>t'
+map global normal <c-p> ': fzf-mode<ret>v'
+map global normal <c-e> ': fzf-mode<ret>m'
+
+map global user W '| fmt --width 80<ret>' -docstring "Wrap selection to 80 columns"
+
+map global normal <c-f>  ':w<ret>$lint -f $kak_buffile<ret>'
+
+set-option global indentwidth 2
+hook global InsertChar \t %{ try %{
+      execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@"
+}}
+hook global InsertDelete ' ' %{ try %{
+      execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>'
+}}
+
+# addhl global/ wrap add-highlighter -word -indent -marker |>
+# addhl global/ column 81 default,red
+# addhl global/ wrap -word -indent -width 92 -marker ☇
+
+
+hook global WinSetOption filetype=dhall %{
+}
+hook global BufSetOption filetype=html %{
+}
+
+hook global WinSetOption filetype=c %{
+}
+
+# define-command py_tags %{ nop %sh{ ctags **/*.py} }
+
+
+hook global WinSetOption filetype=python %{
+
+  # hook buffer BufWritePre .* py_tags
+  set window indentwidth 2
+}
+
+define-command fast_tags %{ nop %sh{ fast-tags **/*.hs} }
+
+hook global WinSetOption filetype=haskell %{
+  map global user H '<a-|>xargs hoogle-lucky <ret>'
+  hook buffer BufWritePre .* fast_tags
+  map buffer user T ': tagbar-toggle<ret>'
+}
+
+hook global WinSetOption filetype=nix %{
+}
+
+hook global WinSetOption filetype=terraform %{
+}
+
+hook global WinSetOption filetype=json %{
+}
+
+hook global WinSetOption filetype=css %{
+}
+
+# hook global WinSetOption filetype=terraform %{
+# }
+
+hook global WinSetOption filetype=(markdown|latex) %{
+  set-option buffer autowrap_column 80
+  autowrap-enable
+}
+
+declare-option str background 'rgb:282a36'
+declare-option str dimmed_background 'rgb:44475a'
+
+set-face global ShowCharactersBackground %opt{background}
+set-face global ShowCharactersDimmedBackground %opt{dimmed_background}
+
+# Hook on filetype is required
+hook global WinSetOption filetype=.* %{
+  require-module show-characters
+  # Fix duplicate show-characters highlighter
+  # Not sure why it is needed
+  remove-highlighter window/show-characters
+  add-highlighter window/show-characters ref show-characters
+  hook -always -once window WinSetOption filetype=.* %{
+    remove-highlighter window/show-characters
+  }
+}
+
+provide-module show-characters %{
+  add-highlighter shared/show-characters regions
+  add-highlighter shared/show-characters/code default-region group
+  add-highlighter shared/show-characters/code/tab regex '\t+' 0:red,red
+  add-highlighter shared/show-characters/code/trailing-whitespaces regex '\h+$' 0:red,red
+  add-highlighter shared/show-characters/code/cesure regex '‐+' 0:red
+  add-highlighter shared/show-characters/code/range-of-values regex '‑+' 0:blue
+  add-highlighter shared/show-characters/code/u+2013 regex '–+' 0:green
+  add-highlighter shared/show-characters/code/u+2014 regex '—+' 0:green+b
+  add-highlighter shared/show-characters/code/u+2015 regex '―+' 0:red
+  add-highlighter shared/show-characters/code/math regex '[−×]+' 0:cyan
+  add-highlighter shared/show-characters/code/opening-quotation-mark regex '[“‘]+' 0:cyan
+  add-highlighter shared/show-characters/code/closing-quotation-mark regex '”+' 0:cyan+u
+}
+
+hook global WinSetOption filetype=tagbar %{
+  remove-highlighter window/wrap
+  # you can also disable rendering whitespaces here, line numbers, and
+  # matching characters
+}
