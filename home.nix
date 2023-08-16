@@ -18,14 +18,12 @@
       jq
       kak-lsp
 
-      (kakoune.overrideAttrs (old: {
-        src = pkgs.fetchFromGitHub {
-          owner = "mawww";
-          repo = "kakoune";
-          rev = "019fbc5";
-          sha256 = "9TDijny02CSPjTXmqNDHp9gXRtj0pmXZO+wbBhy2tDQ=";
-        };
-      }))
+    (kakoune.overrideAttrs (old: {
+      src = builtins.fetchTarball {
+       url="https://github.com/mawww/kakoune/archive/refs/tags/v2023.08.05.tar.gz";
+      sha256="0siqlp8hx6hjp2rmrbz5c5qdwbfs1akn6257zch3n4kggz1y87a5";};
+
+     }))
 
       nixfmt
       nnn

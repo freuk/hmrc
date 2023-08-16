@@ -1,12 +1,12 @@
 #A-<key> Rebinds
 map global normal <minus> ,
-map global goto t a
-map global goto L l
-map global goto H h
-map global goto G g
-map global goto K k
-map global goto E e
-map global goto J j
+#map global goto t a
+#map global goto L l
+#map global goto H h
+#map global goto G g
+#map global goto K k
+#map global goto E e
+#map global goto J j
 map global user a <A-a>
 map global user b <A-b>
 map global user c <A-c>
@@ -27,7 +27,7 @@ map global user L <A-L>
 map global user h <A-h>
 map global user a <A-a>
 map global user i <A-i>
-map global user / <A-/>
+#map global user / <A-/>
 map global user n <A-n>
 map global user k <A-k>
 map global user K <A-K>
