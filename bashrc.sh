@@ -133,7 +133,7 @@ bind -m vi-insert '"\C-v": "\C-z\C-v\C-z"'
 stty stop undef
 
 _insertNixShell_ () {
-    printf 'nix-shell'
+    printf 'cached-nix-shell'
 }
 
 bind -m emacs-standard '"\C-s": " \C-b\C-k \C-u`_insertNixShell_`\e\C-e\er\C-m\C-y\C-a\e \C-y\ey\C-x\C-x\C-d"'

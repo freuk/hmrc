@@ -48,7 +48,6 @@
     bash = {
       enable = true;
       shellAliases = {
-        s = "nix-shell";
         t = "tig";
         tb = "nc termbin.com 9999";
         ls = "exa";
