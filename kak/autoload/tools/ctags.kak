@@ -57,7 +57,7 @@ define-command -params ..1 \
                 menu_info = $3; gsub("!", "!!", menu_info);
                 edit_path = path($2); gsub("!", "!!", edit_path); gsub("#", "##", edit_path); gsub("&", "&&", edit_path); gsub("\\|", "||", edit_path);
                 line_number = $3;
-                out = out "%!" menu_item ": {MenuInfo}{\}" menu_info "! %!evaluate-commands %# try %& edit -existing %|" edit_path "|; execute-keys %|" line_number "gx| & catch %& fail unable to find tag &; try %& execute-keys %|s\\Q" select "<ret>| & # !"
+                out = out "%!" menu_item ": {MenuInfo}{\\}" menu_info "! %!evaluate-commands %# try %& edit -existing %|" edit_path "|; execute-keys %|" line_number "gx| & catch %& fail unable to find tag &; try %& execute-keys %|s\\Q" select "<ret>| & # !"
             }
             END { print ( length(out) == 0 ? "fail no such tag " ENVIRON["tagname"] : "menu -markup -auto-single " out ) }
             # Ensure x is an absolute file path, by prepending with tagroot
@@ -72,7 +72,7 @@ define-command ctags-complete -docstring "Complete the current selection" %{
                 eval "set -- $kak_quoted_opt_ctagsfiles"
                 for ctagsfile in "$@"; do
                     ${kak_opt_readtagscmd} -p -t "$ctagsfile" ${kak_selection}
-                done | awk '{ uniq[$1]++ } END { for (elem in uniq) printf " %1$s||%1$s", elem }'
+                done | awk '{ uniq[$1]++ } END { for (elem in uniq) printf " %s||%s", elem, elem }'
             )
             printf %s\\n "evaluate-commands -client ${kak_client} set-option buffer=${kak_bufname} ctags_completions ${header}${compl}" | \
                 kak -p ${kak_session}
@@ -88,7 +88,7 @@ define-command ctags-funcinfo -docstring "Display ctags information about a sele
                 f=${kak_selection%?}
                 sig='\tsignature:(.*)'
                 csn='\t(class|struct|namespace):(\S+)'
-                sigs=$(${kak_opt_readtagscmd} -e -Q '(eq? $kind "f")' "${f}" | sed -re "s/^.*${csn}.*${sig}$/\3 [\2::${f}]/ ;t ;s/^.*${sig}$/\1 [${f}]/")
+                sigs=$(${kak_opt_readtagscmd} -e -Q '(eq? $kind "f")' "${f}" | sed -Ee "s/^.*${csn}.*${sig}$/\3 [\2::${f}]/ ;t ;s/^.*${sig}$/\1 [${f}]/")
                 if [ -n "$sigs" ]; then
                     printf %s\\n "evaluate-commands -client ${kak_client} %{info -anchor $kak_cursor_line.$kak_cursor_column -style above '$sigs'}"
                 fi
@@ -150,7 +150,7 @@ define-command ctags-enable-autocomplete -docstring "Enable automatic ctags comp
     hook window -group ctags-autocomplete InsertIdle .* %{
         try %{
             evaluate-commands -draft %{ # select previous word >= ctags_min_chars
-                execute-keys "<space>b_<a-k>.{%opt{ctags_min_chars},}<ret>"
+                execute-keys ",b_<a-k>.{%opt{ctags_min_chars},}<ret>"
                 ctags-complete          # run in draft context to preserve selection
             }
         }

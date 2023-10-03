@@ -1,5 +1,5 @@
-set-face global crosshairs_line default,rgb:383838+bd
-set-face global crosshairs_column default,rgb:383838+bd
+set-face global crosshairs_line default,cyan+bd
+set-face global crosshairs_column default,cyan+bd
 
 declare-option -hidden bool highlight_current_line false
 declare-option -hidden str highlight_current_line_hook_cmd "nop"

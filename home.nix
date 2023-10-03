@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
-  home.stateVersion = "22.05";
-  home.username = "fre";
-  home.homeDirectory = "/home/fre";
+  home.stateVersion = "23.05";
+  home.username = "ubuntu";
+  home.homeDirectory = "/home/ubuntu";
 
   home = {
     packages = with pkgs; [
@@ -9,6 +9,7 @@
       aspellDicts.en
       aspellDicts.en-computers
       aspellDicts.en-science
+      cached-nix-shell
       exa
       fasd
       fzf
@@ -18,12 +19,14 @@
       jq
       kak-lsp
 
-    (kakoune.overrideAttrs (old: {
-      src = builtins.fetchTarball {
-       url="https://github.com/mawww/kakoune/archive/refs/tags/v2023.08.05.tar.gz";
-      sha256="0siqlp8hx6hjp2rmrbz5c5qdwbfs1akn6257zch3n4kggz1y87a5";};
+      (kakoune.overrideAttrs (old: {
+        src = builtins.fetchTarball {
+          url =
+            "https://github.com/mawww/kakoune/archive/refs/tags/v2023.08.05.tar.gz";
+          sha256 = "0siqlp8hx6hjp2rmrbz5c5qdwbfs1akn6257zch3n4kggz1y87a5";
+        };
 
-     }))
+      }))
 
       nixfmt
       nnn
@@ -44,6 +47,7 @@
   services.lorri.enable = true;
 
   programs = {
+    direnv.enable = true;
     home-manager.enable = true;
     bash = {
       enable = true;
@@ -72,6 +76,7 @@
   home.file = {
     ".inputrc".source = ./inputrc;
     ".ghc/ghci.conf".source = ./ghci.conf;
+    ".config/nixpkgs/config.nix".source = ./config.nix;
   };
 
   xdg = {

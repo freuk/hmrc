@@ -15,14 +15,15 @@ declare-option -hidden line-specs clang_flags
 declare-option -hidden line-specs clang_errors
 
 define-command -params ..1 \
-    -docstring %{Parse the contents of the current buffer
-The syntaxic errors detected during parsing are shown when auto-diagnostics are enabled} \
-    clang-parse %{
+    -docstring %{
+        Parse the contents of the current buffer
+        The syntaxic errors detected during parsing are shown when auto-diagnostics are enabled
+    } clang-parse %{
     evaluate-commands %sh{
         dir=$(mktemp -d "${TMPDIR:-/tmp}"/kak-clang.XXXXXXXX)
         mkfifo ${dir}/fifo
         printf %s\\n "
-            evaluate-commands -no-hooks write -sync -atomic ${dir}/buf
+            evaluate-commands -no-hooks write -sync -method replace ${dir}/buf
             evaluate-commands -draft %{
                 edit! -fifo ${dir}/fifo -debug *clang-output*
                 set-option buffer filetype make
@@ -88,12 +89,12 @@ The syntaxic errors detected during parsing are shown when auto-diagnostics are 
                 printf %s\\n "evaluate-commands -client ${kak_client} echo 'clang parsing done'" | kak -p ${kak_session}
             fi
 
-            flags=$(cat ${dir}/stderr | sed -rne "
+            flags=$(cat ${dir}/stderr | sed -Ene "
                         /^<stdin>:[0-9]+:([0-9]+:)? (fatal )?error/ { s/^<stdin>:([0-9]+):.*/'\1|{red}█'/; p }
                         /^<stdin>:[0-9]+:([0-9]+:)? warning/ { s/^<stdin>:([0-9]+):.*/'\1|{yellow}█'/; p }
                     " | paste -s -d ' ' -)
 
-            errors=$(cat ${dir}/stderr | sed -rne "
+            errors=$(cat ${dir}/stderr | sed -Ene "
                         /^<stdin>:[0-9]+:([0-9]+:)? ((fatal )?error|warning)/ {
                             s/'/''/g; s/^<stdin>:([0-9]+):([0-9]+:)? (.*)/'\1|\3'/; p
                         }" | sort -n | paste -s -d ' ' -)
@@ -110,7 +111,7 @@ define-command clang-complete -docstring "Complete the current selection" %{ cla
 
 define-command -hidden clang-show-completion-info %[ try %[
     evaluate-commands -draft %[
-        execute-keys <space>{( <a-k> ^\( <ret> b <a-k> \A\w+\z <ret>
+        execute-keys ,{( <a-k> ^\( <ret> b <a-k> \A\w+\z <ret>
         evaluate-commands %sh[
             desc=$(printf %s\\n "${kak_opt_clang_completions}" | sed -e "{ s/\([^\\]\):/\1\n/g }" | sed -ne "/^${kak_selection}|/ { s/^[^|]\+|//; s/|.*$//; s/\\\:/:/g; p }")
             if [ -n "$desc" ]; then
@@ -154,9 +155,10 @@ define-command -hidden clang-show-error-info %{
         fi
     } }
 
-define-command clang-enable-diagnostics -docstring %{Activate automatic error reporting and diagnostics
-Information about the analysis are showned after the buffer has been parsed with the clang-parse function} \
-%{
+define-command clang-enable-diagnostics -docstring %{
+    Activate automatic error reporting and diagnostics
+    Information about the analysis will be shown after the buffer has been parsed with the clang-parse function
+} %{
     add-highlighter window/clang_flags flag-lines default clang_flags
     hook window -group clang-diagnostics NormalIdle .* %{ clang-show-error-info }
     hook window -group clang-diagnostics WinSetOption ^clang_errors=.* %{ info; clang-show-error-info }
@@ -172,6 +174,8 @@ define-command clang-diagnostics-next -docstring "Jump to the next line that con
     evaluate-commands %sh{
         eval "set -- ${kak_quoted_opt_clang_errors}"
         shift # skip timestamp
+        unset line
+        unset first_line
         for error in "$@"; do
             candidate=${error%%|*}
             first_line=${first_line-$candidate}

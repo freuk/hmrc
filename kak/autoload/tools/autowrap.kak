@@ -1,17 +1,19 @@
 declare-option -docstring "maximum amount of characters per line, after which a newline character will be inserted" \
     int autowrap_column 80
 
-declare-option -docstring %{when enabled, paragraph formatting will reformat the whole paragraph in which characters are being inserted
-This can potentially break formatting of documents containing markup (e.g. markdown)} \
-    bool autowrap_format_paragraph no
-declare-option -docstring %{command to which the paragraphs to wrap will be passed
-all occurences of '%c' are replaced with `autowrap_column`} \
-    str autowrap_fmtcmd 'fold -s -w %c'
+declare-option -docstring %{
+    when enabled, paragraph formatting will reformat the whole paragraph in which characters are being inserted
+    This can potentially break formatting of documents containing markup (e.g. markdown)
+} bool autowrap_format_paragraph no
+declare-option -docstring %{
+    command to which the paragraphs to wrap will be passed
+    all occurences of '%c' are replaced with `autowrap_column`
+} str autowrap_fmtcmd 'fold -s -w %c'
 
 define-command -hidden autowrap-cursor %{ evaluate-commands -save-regs '/"|^@m' %{
     try %{
         ## if the line isn't too long, do nothing
-        execute-keys -draft "<a-x><a-k>^[^\n]{%opt{autowrap_column},}[^\n]<ret>"
+        execute-keys -draft "x<a-k>^[^\n]{%opt{autowrap_column},}[^\n]<ret>"
 
         try %{
             reg m "%val{selections_desc}"
@@ -28,7 +30,7 @@ define-command -hidden autowrap-cursor %{ evaluate-commands -save-regs '/"|^@m' 
                                  | sed "s/%c/${kak_opt_autowrap_column}/g")
                     printf %s "
                         evaluate-commands -draft %{
-                            execute-keys '<a-]>p<a-x><a-j>|${format_cmd}<ret>'
+                            execute-keys '<a-]>px<a-j>|${format_cmd}<ret>'
                             try %{ execute-keys s\h+$<ret> d }
                         }
                         select '${kak_main_reg_m}'

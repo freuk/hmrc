@@ -1,12 +1,5 @@
 #A-<key> Rebinds
-map global normal <minus> ,
-#map global goto t a
-#map global goto L l
-#map global goto H h
-#map global goto G g
-#map global goto K k
-#map global goto E e
-#map global goto J j
+map global goto t a
 map global user a <A-a>
 map global user b <A-b>
 map global user c <A-c>
@@ -81,22 +74,6 @@ map global user <semicolon> <A-semicolon>
 map global user t '|sort<ret>'
 
 map global object m %{c^[<lt>=]{4\,}[^\n]*\n,^[<gt>=]{4\,}[^\n]*\n<ret>} -docstring 'conflict markers'
-
-define-command conflict-use-1 %{
-	evaluate-commands -draft %{
-		execute-keys <a-h>h/^<lt>{4}<ret><a-x>d
-		execute-keys h/^={4}<ret>j
-		execute-keys -with-maps <a-a>m
-		execute-keys d
-	}
-} -docstring "resolve a conflict by using the first version"
-define-command conflict-use-2 %{
-	evaluate-commands -draft %{
-		execute-keys j
-		execute-keys -with-maps <a-a>m
-		execute-keys dh/^>{4}<ret><a-x>d
-	}
-} -docstring "resolve a conflict by using the second version"
 
 map global user 1 :conflict-use-1<ret>
 map global user 2 :conflict-use-2<ret>

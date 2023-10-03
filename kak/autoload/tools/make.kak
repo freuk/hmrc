@@ -8,12 +8,13 @@ declare-option -docstring "name of the client in which utilities display informa
 declare-option -hidden int make_current_error_line
 
 define-command -params .. \
-    -docstring %{make [<arguments>]: make utility wrapper
-All the optional arguments are forwarded to the make utility} \
-    make %{ evaluate-commands %sh{
+    -docstring %{
+        make [<arguments>]: make utility wrapper
+        All the optional arguments are forwarded to the make utility
+     } make %{ evaluate-commands %sh{
      output=$(mktemp -d "${TMPDIR:-/tmp}"/kak-make.XXXXXXXX)/fifo
      mkfifo ${output}
-     ( eval ${kak_opt_makecmd} "$@" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
+     ( eval "${kak_opt_makecmd}" "$@" > ${output} 2>&1 & ) > /dev/null 2>&1 < /dev/null
 
      printf %s\\n "evaluate-commands -try-client '$kak_opt_toolsclient' %{
                edit! -fifo ${output} -scroll *make*
@@ -71,7 +72,12 @@ define-command make-next-error -docstring 'Jump to the next make error' %{
         execute-keys "%opt{make_current_error_line}ggl" "/^(?:\w:)?[^:\n]+:\d+:(?:\d+:)?%opt{make_error_pattern}<ret>"
         make-jump
     }
-    try %{ evaluate-commands -client %opt{toolsclient} %{ execute-keys %opt{make_current_error_line}g } }
+    try %{
+        evaluate-commands -client %opt{toolsclient} %{
+            buffer '*make*'
+            execute-keys %opt{make_current_error_line}g
+        }
+    }
 }
 
 define-command make-previous-error -docstring 'Jump to the previous make error' %{
@@ -80,5 +86,10 @@ define-command make-previous-error -docstring 'Jump to the previous make error' 
         execute-keys "%opt{make_current_error_line}g" "<a-/>^(?:\w:)?[^:\n]+:\d+:(?:\d+:)?%opt{make_error_pattern}<ret>"
         make-jump
     }
-    try %{ evaluate-commands -client %opt{toolsclient} %{ execute-keys %opt{make_current_error_line}g } }
+    try %{
+        evaluate-commands -client %opt{toolsclient} %{
+            buffer '*make*'
+            execute-keys %opt{make_current_error_line}g
+        }
+    }
 }

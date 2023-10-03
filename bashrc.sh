@@ -324,3 +324,8 @@ _just() {
 complete -F _just -o bashdefault -o default just
 
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi
+
+export FLYCTL_INSTALL="/home/ubuntu/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+. ~/.nvm/nvm.sh
