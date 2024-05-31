@@ -14,6 +14,7 @@
       fasd
       fzf
       git
+      git-interactive-rebase-tool
       htop
       hwloc
       jq

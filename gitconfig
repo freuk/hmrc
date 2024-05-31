@@ -20,6 +20,9 @@
 [difftool]
   prompt = false
 
+[sequence]
+  editor = interactive-rebase-tool
+
 [alias]
   ci = commit
   co = checkout

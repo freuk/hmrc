@@ -1,9 +1,15 @@
 #A-<key> Rebinds
 map global goto t a
+#map global goto L l
+#map global goto H h
+#map global goto G g
+#map global goto K k
+#map global goto E e
+#map global goto J j
 map global user a <A-a>
 map global user b <A-b>
 map global user c <A-c>
-map global user C <A-C>
+#map global user C <A-C>
 map global user B <A-B>
 map global user s <A-s>
 map global user x <A-x>
@@ -27,6 +33,31 @@ map global user K <A-K>
 map global user s <A-s>
 map global user ) <A-)>
 map global user ( <A-(>
+
+
+hook global ModuleLoaded fzf %{
+    set-option global fzf_file_command "rg"
+}
+
+hook global ModuleLoaded zellij %{
+    alias global focus zellij-focus
+    alias global terminal zellij-terminal-impl
+}
+
+hook global ModuleLoaded konflict %{
+    declare-user-mode konflict
+    map global user C ': enter-user-mode konflict<ret>' -docstring "Enter git conflict resolution mode"
+    map global konflict s ': konflict-start<ret>' -docstring "Start git conflict resolution"
+    map global konflict j ': konflict-use-mine<ret>' -docstring "Use Mine"
+    map global konflict k ': konflict-use-yours<ret>' -docstring "Use Yours"
+    map global konflict J ': konflict-use-mine-then-yours<ret>' -docstring "Use Mine then Yours"
+    map global konflict K ': konflict-use-yours-then-mine<ret>' -docstring "Use yours then Mine"
+    map global konflict d ': konflict-use-none<ret>' -docstring "Use None"
+}
+
+require-module fzf
+require-module zellij
+require-module konflict
 
 # add-highlighter global/ show-whitespaces -tab '|' -tabpad '-'
 
@@ -62,7 +93,7 @@ define-command window-enable-alignment-spaces %{
 add-highlighter shared/alignment-tabs show-whitespaces -tab '│' -tabpad ' ' -spc ' ' -lf ' ' -nbsp ' '
 add-highlighter shared/alignment-spaces replace-ranges alignment_spaces_specs
 
-colorscheme primer
+# colorscheme primer
 
 define-command stripw %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
 map global user w ':stripw<ret>'
@@ -74,9 +105,6 @@ map global user <semicolon> <A-semicolon>
 map global user t '|sort<ret>'
 
 map global object m %{c^[<lt>=]{4\,}[^\n]*\n,^[<gt>=]{4\,}[^\n]*\n<ret>} -docstring 'conflict markers'
-
-map global user 1 :conflict-use-1<ret>
-map global user 2 :conflict-use-2<ret>
 
 map global user m :mark-word<ret>
 map global user M :mark-clear<ret>
@@ -118,17 +146,6 @@ map global normal <c-p> ': fzf-mode<ret>f'
 map global normal <c-t> ': fzf-mode<ret>t'
 map global normal <c-g> ': fzf-mode<ret>v'
 map global normal <c-e> ': fzf-mode<ret>m'
-
-
-hook global ModuleLoaded fzf %{
-    set-option global fzf_file_command "rg"
-}
-
-hook global ModuleLoaded zellij %{
-    alias global focus zellij-focus
-    alias global terminal zellij-terminal-impl
-}
-
 
 map global user W '| fmt --width 80<ret>' -docstring "Wrap selection to 80 columns"
 
