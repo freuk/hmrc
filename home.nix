@@ -62,6 +62,7 @@
         gst = "git status";
         gc = "git commit";
         groot = "git rev-parse --show-toplevel";
+        cg = "cd $(groot)";
         g = "git";
         ga = "git add";
         gps = "git push";
