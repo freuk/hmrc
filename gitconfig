@@ -24,6 +24,7 @@
   editor = interactive-rebase-tool
 
 [alias]
+  wip = commit --no-verify -am "wip"
   ci = commit
   co = checkout
   cp = cherry-pick

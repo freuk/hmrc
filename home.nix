@@ -61,6 +61,7 @@
         l = "exa -la";
         gst = "git status";
         gc = "git commit";
+        groot = "git rev-parse --show-toplevel";
         g = "git";
         ga = "git add";
         gps = "git push";

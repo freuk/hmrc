@@ -35,7 +35,7 @@ map global user ) <A-)>
 map global user ( <A-(>
 
 
-hook global ModuleLoaded fzf %{
+hook global ModuleLoaded fzf-mode %{
     set-option global fzf_file_command "rg"
 }
 
@@ -120,9 +120,7 @@ map global user p '!xclip -selection clipboard -o<ret>'
 map global normal '#' :comment-line<ret> -docstring 'comment line'
 map global user '#' :comment-block<ret> -docstring 'comment block'
 
-map global user f ':format<ret>:lint<ret>'
-# map global insert <tab> '<a-;><gt>'
-# map global insert <s-tab> '<a-;><lt>'
+map global user l ':w<ret> $ lint -f $kak_buffile<ret>' -docstring 'lint -f'
 
 alias global x write-quit
 add-highlighter global/ number-lines
@@ -142,14 +140,13 @@ add-highlighter global/ column '80' default,rgb:d1d5da
 def find -params 1 -shell-script-candidates %{ find -type f } %{ edit %arg{1} }
 # map global normal <C-p> ':find '
 map global normal <c-b> ': fzf-mode<ret>b'
-map global normal <c-p> ': fzf-mode<ret>f'
 map global normal <c-t> ': fzf-mode<ret>t'
-map global normal <c-g> ': fzf-mode<ret>v'
+map global normal <c-p> ': fzf-mode<ret>v'
 map global normal <c-e> ': fzf-mode<ret>m'
 
 map global user W '| fmt --width 80<ret>' -docstring "Wrap selection to 80 columns"
 
-map global user r '<a-i>p|fmt --width 80<ret>' -docstring "Wrap paragraph to 80 columns"
+map global normal <c-f>  ':w<ret>$lint -f $kak_buffile<ret>'
 
 set-option global indentwidth 2
 hook global InsertChar \t %{ try %{
@@ -163,32 +160,21 @@ hook global InsertDelete ' ' %{ try %{
 # addhl global/ column 81 default,red
 # addhl global/ wrap -word -indent -width 92 -marker ☇
 
-eval %sh{kak-lsp --kakoune -s $kak_session}
-map global user l %{: enter-user-mode lsp<ret>} -docstring "LSP mode"
 
 hook global WinSetOption filetype=dhall %{
-  set buffer lintcmd 'true'
-  set buffer formatcmd 'dhall format'
 }
 hook global BufSetOption filetype=html %{
-  set buffer lintcmd 'true'
-  set buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
 }
 
 hook global WinSetOption filetype=c %{
-  set buffer lintcmd 'true'
-  set buffer formatcmd "clang-format -style='WebKit'"
 }
 
 # define-command py_tags %{ nop %sh{ ctags **/*.py} }
 
+
 hook global WinSetOption filetype=python %{
 
-  # lsp-enable-window
-
   # hook buffer BufWritePre .* py_tags
-  map global user f ':format<ret>'
-  set buffer formatcmd "autopep8 -"
   set window indentwidth 2
 }
 
@@ -196,43 +182,26 @@ define-command fast_tags %{ nop %sh{ fast-tags **/*.hs} }
 
 hook global WinSetOption filetype=haskell %{
   map global user H '<a-|>xargs hoogle-lucky <ret>'
-  # map global user h ':lsp-hover <ret>'
-  # map global user d ':lsp-definition <ret>'
-  map global user f ':format<ret>'
   hook buffer BufWritePre .* fast_tags
-  set buffer lintcmd 'hlint'
-  set buffer formatcmd 'ormolu -o -XPatternSynonyms'
   map buffer user T ': tagbar-toggle<ret>'
-  lint-enable
 }
 
 hook global WinSetOption filetype=nix %{
-  set buffer lintcmd 'nix-linter'
-  set buffer formatcmd 'nixfmt'
-  lint-enable
-  lint
 }
 
 hook global WinSetOption filetype=terraform %{
-  set buffer formatcmd 'terraform fmt -'
-  map global user f ':format<ret>'
 }
 
 hook global WinSetOption filetype=json %{
-  set buffer formatcmd 'jq'
-  map global user f ':format<ret>'
 }
 
 hook global WinSetOption filetype=css %{
-  set buffer formatcmd 'prettier --stdin-filepath in.css'
-  map global user f ':format<ret>'
 }
 
 # hook global WinSetOption filetype=terraform %{
 # }
 
 hook global WinSetOption filetype=(markdown|latex) %{
-  map global user f ':spell <ret>'
   set-option buffer autowrap_column 80
   autowrap-enable
 }
