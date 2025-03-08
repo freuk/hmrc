@@ -4,13 +4,10 @@ bind  main P !<git push
 bind  main F !<git push -f
 
 bind main C !<git commit
-bind main W !<git commit -m wip
+bind diff w !<git commit -m wip^
 
 bind  status P !git push
 bind  status D @trash %(file)
 bind  status I @git checkout %(file)
 
 bind main <Ctrl-R> !<git rebase -i %(commit)^
-bind diff <Ctrl-R> !<git rebase -i %(commit)^
-
-bind status r !git  rebase --continue
