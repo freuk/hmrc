@@ -1,8 +1,6 @@
 bind status C !git commit
 bind status w !git commit -m wip
 bind status P !<git push
-bind status D @trash %(file)
-bind status I @git checkout %(file)
 
 bind main P !<git push
 bind main F !<git push -f
