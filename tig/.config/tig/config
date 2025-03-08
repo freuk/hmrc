@@ -4,6 +4,7 @@ bind  main P !<git push
 bind  main F !<git push -f
 
 bind main C !<git commit
+bind main W !<git commit -m wip
 
 bind  status P !git push
 bind  status D @trash %(file)

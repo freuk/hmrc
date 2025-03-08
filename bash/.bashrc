@@ -327,5 +327,6 @@ alias z=zellij
 alias t=tig
 alias g=git
 alias l='ls -lah'
+alias gw='git commit -m wip'
 
 . "$HOME"/.nix-profile/etc/profile.d/nix.sh;
