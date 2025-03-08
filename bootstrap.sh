@@ -6,8 +6,8 @@ nixpkgs.kakoune \
 nixpkgs.tig \
 nixpkgs.nnn \
 nixpkgs.htop \
-nixpkgs.zellij
-# nixpkgs.fzf 
+nixpkgs.zellij \
+nixpkgs.fzf 
 
 stow tig
 stow zellij
