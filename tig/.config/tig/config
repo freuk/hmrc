@@ -2,6 +2,4 @@ bind status C !git commit
 bind status w !git commit -m wip
 bind status P !<git push
 
-bind main P !<git push
-bind main F !<git push -f
 bind main <Ctrl-R> !<git rebase -i %(commit)^
