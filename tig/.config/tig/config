@@ -1,10 +1,11 @@
 bind  status P !<git push
+
 bind  status F !<git push -f
 bind  main P !<git push
 bind  main F !<git push -f
 
-bind main C !<git commit
-bind diff w !<git commit -m wip^
+bind status C !<git commit
+bind status w !<git commit -m wip^
 
 bind  status P !git push
 bind  status D @trash %(file)
