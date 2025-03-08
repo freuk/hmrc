@@ -35,3 +35,7 @@
   d = difftool
   st = status --short --branch
   pp = !sh -c 'git pull && git push'
+
+[user]
+	email = fre@freux.fr
+	name = Valentin Reis

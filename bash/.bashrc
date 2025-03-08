@@ -325,6 +325,7 @@ complete -F _just -o bashdefault -o default just
 alias k=kak
 alias z=zellij
 alias t=tig
+alias g=git
 alias l='ls -lah'
 
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then
