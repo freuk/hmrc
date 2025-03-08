@@ -15,7 +15,6 @@ export TERM="tmux-256color"
 export EDITOR="kak"
 export VISUAL="kak"
 export PAGER="less"
-export NNN_OPENER="$HOME/.config/nnn/nuke.sh"
 export FZF_TMUX_HEIGHT="100%"
 
 parse_git_branch() {
@@ -147,7 +146,7 @@ nnn-jump ()
         return
     fi
     export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    nnn -x -c "$@"
+    nnn -DHdifx -c "$@"
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
@@ -323,9 +322,11 @@ _just() {
 }
 complete -F _just -o bashdefault -o default just
 
-if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi
+alias k=kak
+alias z=zellij
+alias t=tig
+alias l='ls -lah'
 
-export FLYCTL_INSTALL="/home/ubuntu/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-
-. ~/.nvm/nvm.sh
+if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then
+  . "$HOME"/.nix-profile/etc/profile.d/nix.sh;
+fi

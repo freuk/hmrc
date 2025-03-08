@@ -7,6 +7,7 @@ nixpkgs.tig \
 nixpkgs.nnn \
 nixpkgs.htop \
 nixpkgs.zellij \
+nixpkgs.git \
 nixpkgs.fzf 
 
 stow tig

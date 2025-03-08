@@ -1,7 +1,7 @@
 # mark.kak
 # ----------------------------------------------------------------------------
-# version:  1.1.5
-# date:     2019-01-07
+# version:  1.1.7
+# date:     2024-11-01
 # author:   fsub <fsub-9f4j@noreply.cycloid.eu>
 # rights:   UNLICENSE <https://unlicense.org>
 # ----------------------------------------------------------------------------
@@ -47,10 +47,10 @@ add-highlighter shared/mark/ dynregex '%opt{mark_regex_6}' 0:MarkFace6
 
 # NOTE(fsub): try to override all other kinds of highlighting
 hook -group mark global KakBegin .* %{ try %{
-   hook -group mark global WinSetOption filetype=.* %{ try %{
-      remove-highlighter window/mark
-      add-highlighter window/ ref mark
-}}}}
+   hook -group mark global WinSetOption filetype=.* %{
+      try %{ remove-highlighter window/mark }
+      try %{ add-highlighter window/ ref mark }
+}}}
 
 ###
 # definitions
@@ -261,3 +261,4 @@ word under the cursor) \
       printf "set-option current extra_word_chars %s\n" "${ewc}"
    }
 }
+
