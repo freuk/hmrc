@@ -329,4 +329,6 @@ alias g=git
 alias l='ls -lah'
 alias gw='git commit -m wip'
 
-. "$HOME"/.nix-profile/etc/profile.d/nix.sh;
+if [ -f "$HOME"/.nix-profile/etc/profile.d/nix.sh ] then;
+ . "$HOME"/.nix-profile/etc/profile.d/nix.sh;
+fi

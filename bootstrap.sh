@@ -1,14 +1,14 @@
 #!/usr/bin/env bash 
 
 nix-env -iA \
-nixpkgs.stow \
-nixpkgs.kakoune \
-nixpkgs.tig \
-nixpkgs.nnn \
-nixpkgs.htop \
-nixpkgs.zellij \
-nixpkgs.git \
-nixpkgs.fzf 
+nixos.stow \
+nixos.kakoune \
+nixos.tig \
+nixos.nnn \
+nixos.htop \
+nixos.zellij \
+nixos.git \
+nixos.fzf 
 
 stow tig
 stow zellij

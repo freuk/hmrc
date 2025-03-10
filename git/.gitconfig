@@ -20,8 +20,6 @@
 [difftool]
   prompt = false
 
-[sequence]
-  editor = interactive-rebase-tool
 
 [alias]
   wip = commit --no-verify -am "wip"
