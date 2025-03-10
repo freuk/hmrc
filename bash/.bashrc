@@ -146,7 +146,7 @@ nnn-jump ()
         return
     fi
     export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    nnn -eDdifx -c "$@"
+    nnn -eEDdifx -c "$@"
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
@@ -329,6 +329,6 @@ alias g=git
 alias l='ls -lah'
 alias gw='git commit -m wip'
 
-if [ -f "$HOME"/.nix-profile/etc/profile.d/nix.sh ] then;
- . "$HOME"/.nix-profile/etc/profile.d/nix.sh;
+if [ -f "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then
+   . "$HOME"/.nix-profile/etc/profile.d/nix.sh
 fi

@@ -8,6 +8,7 @@ nixos.nnn \
 nixos.htop \
 nixos.zellij \
 nixos.git \
+nixos.icdiff \
 nixos.fzf 
 
 stow tig
