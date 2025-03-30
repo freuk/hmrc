@@ -41,23 +41,10 @@ hook global ModuleLoaded fzf-mode %{
 
 hook global ModuleLoaded zellij %{
     alias global focus zellij-focus
-    alias global terminal zellij-terminal-impl
-}
-
-hook global ModuleLoaded konflict %{
-    declare-user-mode konflict
-    map global user C ': enter-user-mode konflict<ret>' -docstring "Enter git conflict resolution mode"
-    map global konflict s ': konflict-start<ret>' -docstring "Start git conflict resolution"
-    map global konflict j ': konflict-use-mine<ret>' -docstring "Use Mine"
-    map global konflict k ': konflict-use-yours<ret>' -docstring "Use Yours"
-    map global konflict J ': konflict-use-mine-then-yours<ret>' -docstring "Use Mine then Yours"
-    map global konflict K ': konflict-use-yours-then-mine<ret>' -docstring "Use yours then Mine"
-    map global konflict d ': konflict-use-none<ret>' -docstring "Use None"
 }
 
 require-module fzf
 require-module zellij
-require-module konflict
 
 # add-highlighter global/ show-whitespaces -tab '|' -tabpad '-'
 
@@ -108,8 +95,6 @@ map global object m %{c^[<lt>=]{4\,}[^\n]*\n,^[<gt>=]{4\,}[^\n]*\n<ret>} -docstr
 
 map global user m :mark-word<ret>
 map global user M :mark-clear<ret>
-
-wiki-setup %sh{ echo $HOME/notational }
 
 #custom binds
 map global user a '*%s<ret>' -docstring 'select all'
@@ -204,39 +189,6 @@ hook global WinSetOption filetype=css %{
 hook global WinSetOption filetype=(markdown|latex) %{
   set-option buffer autowrap_column 80
   autowrap-enable
-}
-
-declare-option str background 'rgb:282a36'
-declare-option str dimmed_background 'rgb:44475a'
-
-set-face global ShowCharactersBackground %opt{background}
-set-face global ShowCharactersDimmedBackground %opt{dimmed_background}
-
-# Hook on filetype is required
-hook global WinSetOption filetype=.* %{
-  require-module show-characters
-  # Fix duplicate show-characters highlighter
-  # Not sure why it is needed
-  remove-highlighter window/show-characters
-  add-highlighter window/show-characters ref show-characters
-  hook -always -once window WinSetOption filetype=.* %{
-    remove-highlighter window/show-characters
-  }
-}
-
-provide-module show-characters %{
-  add-highlighter shared/show-characters regions
-  add-highlighter shared/show-characters/code default-region group
-  add-highlighter shared/show-characters/code/tab regex '\t+' 0:red,red
-  add-highlighter shared/show-characters/code/trailing-whitespaces regex '\h+$' 0:red,red
-  add-highlighter shared/show-characters/code/cesure regex '‐+' 0:red
-  add-highlighter shared/show-characters/code/range-of-values regex '‑+' 0:blue
-  add-highlighter shared/show-characters/code/u+2013 regex '–+' 0:green
-  add-highlighter shared/show-characters/code/u+2014 regex '—+' 0:green+b
-  add-highlighter shared/show-characters/code/u+2015 regex '―+' 0:red
-  add-highlighter shared/show-characters/code/math regex '[−×]+' 0:cyan
-  add-highlighter shared/show-characters/code/opening-quotation-mark regex '[“‘]+' 0:cyan
-  add-highlighter shared/show-characters/code/closing-quotation-mark regex '”+' 0:cyan+u
 }
 
 hook global WinSetOption filetype=tagbar %{

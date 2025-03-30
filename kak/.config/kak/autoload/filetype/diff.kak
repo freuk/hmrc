@@ -1,13 +1,1 @@
-hook global BufCreate .*\.(diff|patch) %{
-    set-option buffer filetype diff
-}
-
-add-highlighter shared/diff group
-add-highlighter shared/diff/ regex "^\+[^\n]*\n" 0:green,default
-add-highlighter shared/diff/ regex "^-[^\n]*\n" 0:red,default
-add-highlighter shared/diff/ regex "^@@[^\n]*@@" 0:cyan,default
-
-hook -group diff-highlight global WinSetOption filetype=diff %{
-    add-highlighter window/diff ref diff
-    hook -once -always window WinSetOption filetype=.* %{ remove-highlighter window/diff }
-}
+/nix/store/zj9w23myzqpdyw8ig8h5kwnyi0gdgclc-kakoune-unwrapped-2024.05.18/share/kak/rc/filetype/diff.kak

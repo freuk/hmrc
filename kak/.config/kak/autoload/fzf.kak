@@ -90,7 +90,7 @@ str fzf_horizontal_map 'ctrl-s'
 declare-option -docstring 'command to use to create new window when not using tmux.
 
 Default value: terminal kak -c %val{session} -e "%arg{@}"' \
-str fzf_terminal_command 'zellij-terminal-impl kak -c %val{session} -e "%arg{@}"'
+str fzf_terminal_command 'terminal kak -c %val{session} -e "%arg{@}"'
 
 declare-option -docstring "use main selection as default query for fzf if the selection is longer than 1 char." \
 bool fzf_use_main_selection true

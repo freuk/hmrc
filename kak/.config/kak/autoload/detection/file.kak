@@ -1,18 +1,1 @@
-hook global BufOpenFile .* %{ evaluate-commands %sh{
-    if [ -z "${kak_opt_filetype}" ]; then
-        mime=$(file -b -i -L "${kak_buffile}")
-        mime=${mime%;*}
-        case "${mime}" in
-            application/*+xml) filetype="xml" ;;
-            image/*+xml) filetype="xml" ;; #SVG
-            message/rfc822) filetype="mail" ;;
-            text/x-shellscript) filetype="sh" ;;
-            text/x-*) filetype="${mime#text/x-}" ;;
-            text/*)   filetype="${mime#text/}" ;;
-            application/*) filetype="${mime#application/}" ;;
-        esac
-        if [ -n "${filetype}" ]; then
-            printf "set-option buffer filetype '%s'\n" "${filetype}"
-        fi
-    fi
-} }
+/nix/store/zj9w23myzqpdyw8ig8h5kwnyi0gdgclc-kakoune-unwrapped-2024.05.18/share/kak/rc/detection/file.kak

@@ -1,14 +1,1 @@
-# https://freedesktop.org/wiki/Software/systemd/
-# ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-
-# Detection
-# ‾‾‾‾‾‾‾‾‾
-
-hook global BufCreate .*/systemd/.+\.(automount|conf|link|mount|network|path|service|slice|socket|target|timer) %{
-    set-option buffer filetype ini
-
-    # NOTE: INI files define the commenting character to be `;`, which won't work in `systemd` files
-    hook -once buffer BufSetOption comment_line=.+ %{
-        set-option buffer comment_line "#"
-    }
-}
+/nix/store/zj9w23myzqpdyw8ig8h5kwnyi0gdgclc-kakoune-unwrapped-2024.05.18/share/kak/rc/filetype/systemd.kak
