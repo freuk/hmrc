@@ -119,7 +119,7 @@ set global ui_options ncurses_assistant=none
 face global Information white
 face global Error red
 
-add-highlighter global/ column '80' default,rgb:d1d5da
+# add-highlighter global/ column '80' default,rgb:d1d5da
 
 #Control-P imitation
 def find -params 1 -shell-script-candidates %{ find -type f } %{ edit %arg{1} }
