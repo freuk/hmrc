@@ -1,7 +1,7 @@
 keybinds  clear-defaults=true {
 
   normal {
-    bind "F12" { SwitchToMode "pane"; }
+    bind "Ctrl s" { SwitchToMode "pane"; }
   }
 
   pane {
