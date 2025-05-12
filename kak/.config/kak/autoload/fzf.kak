@@ -89,8 +89,8 @@ str fzf_horizontal_map 'ctrl-s'
 
 declare-option -docstring 'command to use to create new window when not using tmux.
 
-Default value: terminal kak -c %val{session} -e "%arg{@}"' \
-str fzf_terminal_command 'terminal kak -c %val{session} -e "%arg{@}"'
+Default value: zellij-terminal kak -c %val{session} -e "%arg{@}"' \
+str fzf_terminal_command 'zellij-terminal kak -c %val{session} -e "%arg{@}"'
 
 declare-option -docstring "use main selection as default query for fzf if the selection is longer than 1 char." \
 bool fzf_use_main_selection true
@@ -102,18 +102,18 @@ try %{ declare-user-mode fzf }
 
 define-command -hidden -docstring "wrapper command to create new vertical split" \
 fzf-vertical -params .. %{ evaluate-commands %{
-    tmux-terminal-vertical kak -c %val{session} -e "%arg{@}"
+    zellij-terminal-vertical kak -c %val{session} -e "%arg{@}"
 }}
 
 define-command -hidden -docstring "wrapper command to create new horizontal split" \
 fzf-horizontal -params .. %{ evaluate-commands %{
-    tmux-terminal-horizontal kak -c %val{session} -e "%arg{@}"
+    zellij-terminal-horizontal kak -c %val{session} -e "%arg{@}"
 }}
 
 define-command -hidden -docstring "wrapper command to create new terminal" \
 fzf-window -params .. %{ evaluate-commands %sh{
     if [ -n "${kak_client_env_TMUX:-}" ]; then
-        printf "%s\n" 'tmux-terminal-window kak -c %val{session} -e "%arg{@}"'
+        printf "%s\n" 'zellij-terminal kak -c %val{session} -e "%arg{@}"'
     else
         printf "%s\n" "${kak_opt_fzf_terminal_command:?}"
     fi

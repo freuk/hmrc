@@ -1,1 +1,4 @@
-/nix/store/zj9w23myzqpdyw8ig8h5kwnyi0gdgclc-kakoune-unwrapped-2024.05.18/share/kak/rc/filetype/gentoo-linux.kak
+# portage ebuild file
+hook global BufCreate .*\.ebuild %{
+    set-option buffer filetype sh
+}
