@@ -37,9 +37,9 @@
 [user]
 	email = fre@freux.fr
 	name = Valentin Reis
-[credential "https://github.com"]
-	helper = 
-	helper = !/home/vreis/.cache/hermit/pkg/gh-2.67.0/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/home/vreis/.cache/hermit/pkg/gh-2.67.0/gh auth git-credential
+	helper = !/home/vreis/.cache/hermit/pkg/gh-2.72.0/gh auth git-credential
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/vreis/.cache/hermit/pkg/gh-2.72.0/gh auth git-credential
